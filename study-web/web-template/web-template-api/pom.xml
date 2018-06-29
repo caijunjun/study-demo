@@ -1,0 +1,156 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.study.demo</groupId>
+		<artifactId>web-template</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>web-template-api</artifactId>
+	<packaging>jar</packaging>
+	<name>${project.artifactId}</name>
+	<url>http://maven.apache.org</url>
+
+	<dependencies>
+		
+		<dependency>
+			<groupId>com.study.demo</groupId>
+			<artifactId>web-template-service</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+
+		<!-- MySQL 连接驱动依赖 -->
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.46</version><!--$NO-MVN-MAN-VER$ -->
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.7.0</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<resources>
+			<!-- 先指定 src/main/resources下所有文件及文件夹为资源文件 -->
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>config-env*.properties</exclude>
+				</excludes>
+			</resource>
+			<!-- 设置对auto-config.properties，jdbc.properties进行过虑，即这些文件中的${key}会被替换掉为真正的值 -->
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>*.properties</include>
+					<include>*.xml</include>
+				</includes>
+				<excludes>
+					<exclude>config-env*.properties</exclude>
+				</excludes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+		
+			<plugin>
+				<groupId>com.github.kongchen</groupId>
+				<artifactId>swagger-maven-plugin</artifactId>
+				<version>3.1.7</version> <!-- TODO: move swagger version to top-level pom -->
+				<configuration>
+					<apiSources>
+						<apiSource>
+							<!-- 支持springMVC -->
+							<springmvc>true</springmvc>
+							<!-- 协议 -->
+							<schemes>http</schemes>
+							<!-- 所在主机，可以为空 -->
+							<host>{{host}}</host>
+							<!-- web项目Context Path -->
+							<basePath>/template</basePath>
+							<!-- 你的web项目Controller包名 -->
+							<locations>com.study.*</locations>
+							<info>
+								<title>文档</title>
+								<version>v1</version>
+								<description>文档接口</description>
+							</info>
+							<!-- 生成后台api模板文档接口要用的 -->
+							<templatePath>${project.basedir}/../version-doc/swagger/templates/strapdown.html.hbs</templatePath>
+							<outputPath>${project.basedir}/../version-doc/swagger/target/document.html</outputPath>
+							<swaggerDirectory>${project.basedir}/../version-doc/swagger/target/swagger-template-ui</swaggerDirectory>
+						</apiSource>
+					</apiSources>
+				</configuration>
+				<executions>
+					<execution>
+						<!-- <phase>prepare-package</phase> -->
+						<phase>install</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<executable>true</executable>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<filters>
+					<filter>src/main/resources/config-env-dev.properties</filter>
+				</filters>
+			</build>
+
+		</profile>
+		<profile>
+			<id>test</id>
+			<build>
+				<filters>
+					<filter>src/main/resources/config-env-test.properties</filter>
+				</filters>
+			</build>
+		</profile>
+		<profile>
+			<id>product</id>
+			<build>
+				<filters>
+					<filter>src/main/resources/config-env-product.properties</filter>
+				</filters>
+			</build>
+		</profile>
+	</profiles>
+</project>
