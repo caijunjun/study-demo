@@ -16,14 +16,63 @@
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
-		
-		
-		
+
+
 
 
 	</dependencies>
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+			</plugin>
+		</plugins>
+		<resources>
+			<!-- 设置对auto-config.properties，jdbc.properties进行过虑，即这些文件中的${key}会被替换掉为真正的值 -->
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>*.properties</include>
+				</includes>
+				<excludes>
+					<exclude>config-env*.properties</exclude>
+				</excludes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
+	
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<filters>
+					<filter>src/main/resources/config-env-dev.properties</filter>
+				</filters>
+			</build>
+
+		</profile>
+		<profile>
+			<id>test</id>
+			<build>
+				<filters>
+					<filter>src/main/resources/config-env-test.properties</filter>
+				</filters>
+			</build>
+		</profile>
+		<profile>
+			<id>product</id>
+			<build>
+				<filters>
+					<filter>src/main/resources/config-env-product.properties</filter>
+				</filters>
+			</build>
+		</profile>
+	</profiles>
 </project>
