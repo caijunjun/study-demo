@@ -1,0 +1,172 @@
+
+
+#查看现有的磁盘空间 
+fdisk -l
+
+#进入需要分区的磁盘中
+fdisk /dev/sdb
+
+fdisk可以用m命令来看fdisk命令的内部命令；
+a：命令指定启动分区；
+d：命令删除一个存在的分区；
+l：命令显示分区ID号的列表；
+m：查看fdisk命令帮助；
+n：命令创建一个新分区；
+p：命令显示分区列表；
+t：命令修改分区的类型ID号；
+w：命令是将对分区表的修改存盘让它发生作用。
+
+n新建
+w保存
+
+#格式化分区 ext3 ext4
+mkfs.ext4 /dev/sdb1
+
+#挂载分区
+mount /dev/sdb1 /data1
+
+#查看硬盘大小以及挂载分区
+df -h
+
+#配置开机自动挂载 0 0 表示开机不检查磁盘。
+vim /etc/fstab
+/dev/sdb1(磁盘分区)  /data1（挂载目录） ext4（文件格式）defaults  0  0
+
+
+#卸载分区，卸载了，其实还可以挂载，而且数据还会在的
+umount /dev/sdb1  
+
+#删除分区
+fdisk /dev/sdb  
+m  
+d  
+1  
+d  
+
+
+
+
+
+linux服务器磁盘扩容的方法
+1、系统环境如下图：
+2、为该系统添加一块新的虚拟硬盘，添加后需重启虚拟机，否则系统不识别；如下图，/dev/sdd 是新添加的硬盘；
+3、fdisk /dev/sdd 为新硬盘创建分区：
+4、Linux允许的主分区为4个，则我们创建分区为 /dev/sdd1
+5、默认情况下新建分区的格式为Linux，我们使用LVM动态添加磁盘空间，	故需要修改 /dev/sdd1 分区格式为LVM，LVM格式id为8e;
+6、创建并修改成功后需格式化该分区：mkfs.ext4  /dev/sdd1
+7、执行完成进入/etc 目录下查看是否存在sdb1文件夹，如果不存在，则执行命令 partprobe 再执行格式化命令；
+8、添加新LVM到已有的LVM组，实现扩容: vgscan 查看现有卷组
+（1）lvm   进入LVM管理
+（2）lvm>pvcreate /dev/sdd1      初始化分区
+（3）lvm>vgextend centos /dev/sdd1          将初始化过的分区加入虚拟卷组 centos-root
+（4）lvm>lvextend -L +7.92G /dev/mapper/centos-root  扩展已有卷的容量
+（5）lvm>pvdisplay        查看卷容量
+（6）lvm>quit 
+9、ext文件系统扩容:resize2fs /dev/mapper/centos-root
+   xfs文件系统扩容:xfs_growfs  
+
+#================================================================================================================================================================================================================================================================
+
+
+创建LVM逻辑卷
+
+
+LVM-Logical Volume Manager逻辑卷管理的一些基本概念：
+
+用途：
+
+在零停机前提下可以自如对文件系统的大小进行调整，可以方便实现文件系统跨越不同磁盘和分区。
+当系统添加了新的磁盘，通过LVM机制，管理员就不必将磁盘的文件移动到新的磁盘上以充分利用新的存储空间，而是直接扩展文件系统跨越磁盘即可。
+
+基本术语：
+
+●物理卷pv(Physical Volume)
+物理卷就是指硬盘分区或从逻辑上与磁盘分区具有同样功能的设备(如RAID),是LVM的基本存储逻辑块,
+但和基本的物理存储介质(如分区、磁盘等)比较,却包含有与LVM相关的管理参数.
+●卷组vg(Volume Group)
+卷组由物理卷组成,类似于非LVM系统中的物理硬盘,可以在卷组上创建一个或多个"LVM分区"(逻辑卷).
+●逻辑卷lv(Logical Volume)
+LVM的逻辑卷类似于非LVM系统中的硬盘分区,在逻辑卷之上可以建立文件系统(比如/home或者/usr等).
+●PE(Physical Extent)
+每一个物理卷被划分为称为PE(Physical Extents)的基本单元,具有唯一编号的PE是可以被LVM寻址的
+最小单元.PE的大小是可配置的,默认为4MB.
+●LE(Logical Extent)
+逻辑卷也被划分为被称为LE(Logical Extents) 的可被寻址的基本单位.在同一个卷组中,LE的大小和
+PE是相同的,并且一一对应.
+和非LVM系统将包含分区信息的元数据保存在位于分区的起始位置的分区表中一样,逻辑卷以及卷 组相关的元数据也是保存在位于物理卷起始处的VGDA(卷组描述符区域)中.VGDA包括以下内容： PV描述符、VG描述符、LV描述符、和一些PE描述符 .
+系统启动LVM时激活VG,并将VGDA加载至内存,来识别LV的实际物理存储位置.当系统进行I/O操作 时,就会根据VGDA建立的映射机制来访问实际的物理位置.
+
+
+#命令顺序
+
+
+一、创建物理卷PV
+In this exercise, you create a physical volume. To do this exercise, you need a hard disk that has free (unpartitioned) disk space available. The recommended method to make disk space available is by adding a new hard disk in your virtual machine environment. In this exercise, I use a clean /dev/vdb device to create the partition. You may have to change the device name to match your configuration. If you do not have a dedicated hard disk available to create this configuration, you might want to consider attaching a USB key to your machine. （我用的是Oracle VirtulBox虚拟机，添加一块虚拟磁盘用于测试）
+1. Open a root shell and type fdisk /dev/sdc .
+2. Type n to create a new partition. Select p to make it a primary partition, and use the partition number that is suggested as a default. If you are using a clean device, this will be partition number 1.
+3. Press Enter when asked for the first sector and type +100M to accept the last sector.
+4. Once you are back on the fdisk prompt, type t to change the partition type. Because there is one partition only, fdisk does not ask which partition to use this partition type on. You may have to select a partition if you are using a different configuration.
+5. The partitioner asks for the partition type you want to use. Type 8e . Then, press w to write changes to disk and quit fdisk.
+If you are getting a message that the partition table could not be updated while writing the changes to disk, reboot your system.
+
+
+[root@rhel7 ~]# fdisk /dev/sdc
+Command (m for help): n
+Select (default p): p
+Partition number (1-4, default 1): 
+First sector (2048-10485759, default 2048):        
+Command (m for help): t
+Hex code (type L to list all codes): L
+Hex code (type L to list all codes): 8e
+Command (m for help): w
+
+
+#命令查看分区后的/dev/sdc
+fdisk -l 
+#分区创建完成后，可以使用命令partprobe使修改的分区生效，不用重启。
+partprobe
+pvcreate /dev/sdc1
+#查询方法
+pvs
+pvdisplay
+
+二、创建卷组VG
+Now that the physical volume has been created, you can assign it to a volume group. It is possible to add a physical volume to an existing volume group , but you will now learn how to create a new volume group and add the physical volume to it.This is a simple one-command procedure. Just type  vgcreate  followed by the name of the volume group you want to create and the name of the physical device you want to add to it. So, if the physical volume name is /dev/sdc1, the complete command is   vgcreate vgdata /dev/sdc1 (语法：vgcreate 卷组名 设备名).  You are completely free in your choice of name for the volume group. I like to start all volume group names with vg, which makes it easy to find the volume groups if there are many, but you are free to choose anything you like. 
+After creating the volume group, you can request details about the volume group using the  vgs  command for a short summary, or the vgdisplay  command to get more information.
+
+
+#vgcreate centos_ext /dev/sdc1
+#vgremove centos_ext
+vgcreate centos_ext /dev/sdc1
+#查询方法
+vgs
+vgdisplay
+三、创建逻辑卷和文件系统
+Now that the volume group has been created, you can start creating logical volumes from it. This procedure is slightly more complicated than the creation of physical volumes or volume groups because there are more choices to be made. While creating the logical volume, you must specify a volume name and a size.
+The volume size can be specified as an absolute value using the -L option. Use, for instance, -L 5G to create an LVM volume with a 5GB size. Alternatively, you can use relative sizes using the -l option. For instance, use -l 50%FREE to use half of all available disk space. You’ll further need to specify the name of the volume group that the logical volume is assigned to, and optionally (but highly recommended), you can use -n to specify the name of the logical volume. For instance, use lvcreate -n lvvol1 -L 100M vgdata to create a logical volume with the name lvvol1 and add that to the vgdata volume group.
+
+
+#创建逻辑卷 -n 名称 -L 大小 设置为最大的99%
+lvcreate -n lv_ext -L 8G centos_ext
+#创建文件系统
+mkfs.xfs /dev/centos_ext/lv_ext  
+mkdir /lvmFiles
+mount /dev/centos_ext/lv_ext /lvmFiles
+添加到/etc/fstab，加下如一行，使其开机自动挂载：
+/dev/centos_ext/lv_ext /lvmFiles xfs defaults 1 2
+
+步骤总结：
+
+1.fdisk --磁盘分区为lvm类型（-t修改分区格式为8e、w写入分区表）
+2.partprobe --让kernel重新读取分区表，使分区生效，无需重启系统
+3.pvcreate /dev/sda1 ----创建物理卷PV
+4.vgcreate VGname /dev/sda1 ---创建卷组VG，可以使用已经存在的VG名，把上一步创建的物理卷加入到这个VG里;一个VG可以包括多个PV.
+5.lvcreate -n LVname -L 200MB VGname ---创建逻辑卷LV，要指定逻辑卷的名字LVname、大小以及从哪个卷组VG划分
+6.mkfs.xfs /dev/VGname/LVname ---格式化逻辑卷LVname
+7.mount /dev/VGname/LVname /lvmFiles ---mount挂载后就可以使用了
+8.vi /etc/fstab --加入开机自动挂载即可
+#================================================================================================================================================================================================================================================================
+
+
+
+

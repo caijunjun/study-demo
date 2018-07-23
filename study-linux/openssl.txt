@@ -1,0 +1,158 @@
+
+@https://blog.csdn.net/aking21alinjuju/article/details/7654097
+一：生成CA证书。
+
+目前不使用第三方权威机构的CA来认证，自己充当CA的角色。  
+
+先决条件：从openssl官网下载www.openssl.org
+               安装openssl[windows和linux安装不同]
+
+开始生成证书和密钥
+
+如果没有配置环境变量，则需要进入openssl的bin目录下执行命令，如：C:/OpenSSL/bin
+
+若只配置了环境变量，则在任意位置都可以执行
+
+在执行命令前，新建两个目录ca和server
+
+
+	1、创建私钥
+	openssl genrsa -out ca/ca-key.pem 2048  
+
+	2、创建证书请求
+	openssl req -new -out ca/ca-req.csr -key ca/ca-key.pem
+
+		Country Name (2 letter code) [XX]:cn
+		State or Province Name (full name) []:zhejiang
+		Locality Name (eg, city) [Default City]:hangzhou
+		Organization Name (eg, company) [Default Company Ltd]:shangyong
+		Organizational Unit Name (eg, section) []:金服
+		Common Name (eg, your name or your server's hostname) []:pingan.vip
+		Email Address []:cjj@qq.com
+
+		Please enter the following 'extra' attributes
+		to be sent with your certificate request
+		A challenge password []:123456
+		An optional company name []:sy
+
+	3、自签署证书
+	openssl x509 -req -in ca/ca-req.csr -signkey ca/ca-key.pem -days 3650 -out ca/ca-cert.pem
+
+	4.将证书导出成浏览器支持的.p12格式(不需要可以省略)
+	openssl pkcs12 -export -clcerts -in ca/ca-cert.pem -inkey ca/ca-key.pem -out ca/ca.p12
+
+	password 654321
+
+二.生成server证书。
+	1、创建私钥
+	openssl genrsa -out server/server-key.pem 2048
+
+	2、创建证书请求
+	openssl req -new -out server/server-req.csr -key server/server-key.pem
+	
+		Country Name (2 letter code) [XX]:cn
+		State or Province Name (full name) []:zhejiang
+		Locality Name (eg, city) [Default City]:hangzhou
+		Organization Name (eg, company) [Default Company Ltd]:shangyong
+		Organizational Unit Name (eg, section) []:金服
+		Common Name (eg, your name or your server's hostname) []:192.168.1.190
+		Email Address []:cjj@qq.com
+
+		Please enter the following 'extra' attributes
+		to be sent with your certificate request
+		A challenge password []:123456
+		An optional company name []:sy
+
+	3、自签署证书
+	openssl x509 -req -in server/server-req.csr -out server/server-cert.pem -signkey server/server-key.pem -CA ca/ca-cert.pem -CAkey ca/ca-key.pem -CAcreateserial -days 3650
+	4、将证书导出成浏览器支持的.p12格式
+	openssl pkcs12 -export -clcerts -in server/server-cert.pem -inkey server/server-key.pem -out server/server.p12
+
+	password 654321
+三.生成client证书。
+
+	1、创建私钥
+	openssl genrsa -out client/client-key.pem 2048 
+
+	2、创建证书请求
+	openssl req -new -out client/client-req.csr -key client/client-key.pem
+	
+		Country Name (2 letter code) [XX]:cn
+		State or Province Name (full name) []:zhejiang
+		Locality Name (eg, city) [Default City]:hangzhou
+		Organization Name (eg, company) [Default Company Ltd]:shangyong
+		Organizational Unit Name (eg, section) []:金服
+		Common Name (eg, your name or your server's hostname) []:pingan.vip
+		Email Address []:cjj@qq.com
+
+		Please enter the following 'extra' attributes
+		to be sent with your certificate request
+		A challenge password []:123456
+		An optional company name []:sy
+
+	3、自签署证书
+	openssl x509 -req -in client/client-req.csr -out client/client-cert.pem -signkey client/client-key.pem -CA ca/ca-cert.pem -CAkey ca/ca-key.pem -CAcreateserial -days 3650
+	
+	4、将证书导出成浏览器支持的.p12格式 ： 
+	openssl pkcs12 -export -clcerts -in client/client-cert.pem -inkey client/client-key.pem -out client/client.p12
+
+	password 654321
+	
+四.根据ca证书生成jks文件
+	jdk bin目录执行
+	keytool -keystore /lvmFiles/jks/truststore.jks -keypass 222222 -storepass 222222 -alias ca -import -trustcacerts -file /lvmFiles/ca/ca-cert.pem
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+openssl req -newkey rsa:2048 -nodes -keyout ca/ca-private.key -x509 -days 3650 -out ca/ca-cert.crt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1、mkdir demoCA/private	
+生成秘钥  使用des3加密
+2、openssl genrsa -out demoCA/private/cakey.pem 2048  
+生成证书请求
+3、openssl req -new -days 3650 -key demoCA/private/cakey.pem -out careq.pem
+自签名
+4、openssl ca -selfsign -in careq.pem -out cacert.pem
+
+
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+

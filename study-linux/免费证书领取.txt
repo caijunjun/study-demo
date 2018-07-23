@@ -1,0 +1,17 @@
+
+https://www.cnblogs.com/tv151579/p/8268356.html
+
+初始化git
+yum -y install git-core
+
+git clone https://github.com/letsencrypt/letsencrypt
+
+./certbot-auto --help all
+./certbot-auto certonly --standalone --email caijunjunit@163.com -d caijunjun.com -d 192.168.1.190
+
+
+更新时间 90天免费
+./certbot-auto certonly --renew-by-default --email caijunjunit@163.com -d caijunjun.com -d 192.168.1.190
+
+续期https 可以加 –verbose 看详细信息
+./letsencrypt-auto renew --verbose

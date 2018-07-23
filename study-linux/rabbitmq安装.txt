@@ -1,0 +1,79 @@
+
+
+
+
+erlang
+官网  https://github.com/rabbitmq/erlang-rpm
+
+创建文件
+# In /etc/yum.repos.d/rabbitmq-erlang.repo
+[rabbitmq-erlang]
+name=rabbitmq-erlang
+baseurl=https://dl.bintray.com/rabbitmq/rpm/erlang/19/el/7
+gpgcheck=1
+gpgkey=https://dl.bintray.com/rabbitmq/Keys/rabbitmq-release-signing-key.asc
+repo_gpgcheck=0
+enabled=1
+#安装erlang
+yum install erlang
+#安装socat
+yum install socat
+#安装rabbitmq
+rpm -ivh --replacefiles rabbitmq-server-3.6.10-1.el6.noarch.rpm
+
+
+
+#默认情况下，在安装RabbitMQ服务器软件包时，服务器不会作为守护程序启动。在系统引导时，默认情况下以管理员身份运行时启动守护程序
+chkconfig rabbitmq-server on
+
+#启动
+rabbitmq-server start
+#以服务方式启动
+service rabbitmq-server start
+
+#停止
+rabbitmq-server stop
+service rabbitmq-server stop
+
+#后台管理界面
+rabbitmq-plugins enable rabbitmq_management
+#高级管理插件
+rabbitmq-plugins enable rabbitmq_shovel rabbitmq_shovel_management
+
+#查看所有用户
+rabbitmqctl list_users
+
+#创建用户/删除用户/修改密码
+rabbitmqctl add_user/delete_user/change_password guest guest
+
+#查看权限列表
+rabbitmqctl list_permissions
+
+#设置权限 角色  超级管理员(administrator)   监控者(monitoring)  策略制定者(policymaker)  普通管理者(management) 其他
+rabbitmqctl  set_user_tags root administrator
+
+
+
+
+
+
+
+
+
+
+
+
+#===========================================================================
+RHEL7 中使用了firewalld代替了原来的iptables，操作设置和原来有点不同：
+查看防火墙状态：systemctl status firewalld
+启动防火墙：systemctl start firewalld
+停止防火墙：systemctl stop firewalld
+
+#方式一
+firewall-cmd --zone=public --permanent --add-port=15672/tcp
+firewall-cmd --zone=public --permanent --add-port=5672/tcp
+
+firewall-cmd --reload
+#方式二
+tail /etc/firewalld/zones/public.xml
+vi /etc/firewalld/zones/public.xml

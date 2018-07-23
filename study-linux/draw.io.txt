@@ -1,0 +1,17 @@
+
+
+
+rpm -ivh --replacefiles draw.io-x86_64-8.8.0.rpm
+
+libnotify 被 draw.io-8.8.0-156.x86_64 需要
+libappindicator 被 draw.io-8.8.0-156.x86_64 需要
+libXScrnSaver 被 draw.io-8.8.0-156.x86_64 需要
+
+
+yum install libnotify
+
+yum install libappindicator
+
+yum install libXScrnSaver
+
+
