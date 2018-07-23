@@ -18,12 +18,14 @@
 	<dependencies>
 		<!-- 构建Restful API -->
 		<!--springfox-swagger需要的最小依赖 start -->
-		<!-- https://mvnrepository.com/artifact/io.swagger/swagger-core -->
+		<!-- https://mvnrepository.com/artifact/io.swagger/swagger-annotations -->
 		<dependency>
 			<groupId>io.swagger</groupId>
-			<artifactId>swagger-core</artifactId>
-			<version>1.5.16</version>
+			<artifactId>swagger-annotations</artifactId>
+			<version>1.5.14</version>
 		</dependency>
+
+
 
 	</dependencies>
 
