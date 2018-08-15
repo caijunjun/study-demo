@@ -53,6 +53,7 @@
 
 	<modules>
 		<module>study-netty</module>
+		<module>study-mqtt</module>
 		<module>study-common</module>
 	</modules>
 </project>
