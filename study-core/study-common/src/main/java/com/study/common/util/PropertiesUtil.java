@@ -28,19 +28,19 @@ public class PropertiesUtil {
 	}
 
 	public static long getLong(String key) {
-		return Long.parseLong(get(key));
+		return Long.parseLong(get(key,"0"));
 	}
 
 	public static int getInt(String key) {
-		return Integer.parseInt(get(key));
+		return Integer.parseInt(get(key,"0"));
 	}
 
 	public static boolean getBoolean(String key) {
-		return Boolean.parseBoolean(get(key));
+		return Boolean.parseBoolean(get(key,"false"));
 	}
 
 	public static double getDoubleItem(String key) {
-		return Double.parseDouble(get(key));
+		return Double.parseDouble(get(key,"0"));
 	}
 
 	public static String get(String key) {

@@ -1,7 +1,6 @@
 package com.study.mqtt;
 
 import java.text.MessageFormat;
-import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
@@ -14,8 +13,8 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-public class Test {
-	static int maxCount = 1;
+public class Test2 {
+	static int maxCount = 1000;
 	static CountDownLatch countDownLatch = new CountDownLatch(1);
 	static CyclicBarrier cyclicBarrier = new CyclicBarrier(maxCount);
 
@@ -28,7 +27,7 @@ public class Test {
 			new Thread(() -> {
 				// try {
 				// cyclicBarrier.await();
-				connectMqtt("test" + UUID.randomUUID() + Thread.currentThread().getName());
+				connectMqtt("test" + Thread.currentThread().getName());
 				// } catch (BrokenBarrierException | InterruptedException e) {
 				// // TODO Auto-generated catch block
 				// e.printStackTrace();
@@ -50,19 +49,19 @@ public class Test {
 		mqtt.setConnectionTimeout(10);
 		// 设置心跳间隔
 		mqtt.setKeepAliveInterval(20);
-
+		// 设置遗愿消息
+		mqtt.setWill("lastWill/" + clientId, "异常退出".getBytes(), 1, true);
 		// mqtt.setUserName("mqtt_root");
 		// mqtt.setPassword("sharePassword".toCharArray());
 
 		// mqtt.setMaxInflight(maxInflight);
 
 		// mqtt.setMqttVersion(MqttVersion);
-		mqtt.setUserName("admin_api");
-		mqtt.setPassword("adminpublic".toCharArray());
-//		mqtt.setPassword("adminpublic".toCharArray());
+		// mqtt.setUserName("admin");
+		// mqtt.setPassword("cjj1!ECS".toCharArray());
 
-		// mqtt.setUserName("guest");
-		// mqtt.setPassword("public".toCharArray());
+		mqtt.setUserName("guest");
+		mqtt.setPassword("public".toCharArray());
 		// 起到负载均衡和高可用的作用
 		// mqtt.setServerURIs(array);
 		// mqtt.setSocketFactory(socketFactory);
@@ -76,50 +75,60 @@ public class Test {
 
 				@Override
 				public void messageArrived(String topic, MqttMessage message) throws Exception {
-					System.out.println(MessageFormat.format("clientId:{0} message:{1}", clientId, message));
+					System.out.println(MessageFormat.format("topic:{0} message:{1}", topic, message));
 				}
 
 				@Override
 				public void deliveryComplete(IMqttDeliveryToken token) {
-					System.out.println(MessageFormat.format("clientId:{0} token:{1}", clientId, token));
+					System.out.println(MessageFormat.format("token:{0}", token));
 
 				}
 
 				@Override
 				public void connectionLost(Throwable cause) {
-					System.out.println(MessageFormat.format("clientId:{0} cause:{1}", clientId, cause));
+					System.out.println(MessageFormat.format("cause:{0}", cause));
 
 				}
 			});
 
 			mqttClient.connect(mqtt);
 
-			mqttClient.subscribe("$SYS/brokers", (topic, message) -> {
+			//
+			// mqttClient.subscribe("$SYS/brokers", (topic, message) -> {
+			// System.out
+			// .println(MessageFormat.format("subscribe message clientId:{0} message:{1}",
+			// clientId, message));
+			// });
+
+			// 订阅私有主题
+			String clientTopic = "clients/" + clientId;
+			mqttClient.subscribe(clientTopic);
+			// 订阅共享主题
+			mqttClient.subscribe("shareTopic", (topic, message) -> {
 				System.out
 						.println(MessageFormat.format("subscribe message clientId:{0} message:{1}", clientId, message));
 			});
 
-			//订阅遗愿消息
-			mqttClient.subscribe("lastWill/+", (topic, message) -> {
-				System.out.println(
-						MessageFormat.format("lastwill subscribe message topic:{0} message:{1}", topic, message));
-			});
-
-			mqttClient.subscribe("$SYS/brokers/+/clients/+/connected", (topic, message) -> {
-				System.out.println(MessageFormat.format("SYS 上线  message topic:{0} message:{1}", topic, message));
-			});
-
-			mqttClient.subscribe("$SYS/brokers/+/clients/+/disconnected", (topic, message) -> {
-				String[] topics= topic.split("/");
-				System.out.println(MessageFormat.format("SYS 下线通知 node:{0} clientId:{0} message:{2} ", topics[2],topics[4], message));
-			});
+			// mqttClient.subscribe("$SYS/brokers/+/clients/+/connected", (topic, message)
+			// -> {
+			// System.out.println(MessageFormat.format("SYS 上线 message clientId:{0}
+			// topic:{1} message:{2}",
+			// clientId, topic, message));
+			// });
+			//
+			// mqttClient.subscribe("$SYS/brokers/+/clients/+/disconnected", (topic,
+			// message) -> {
+			// System.out.println(MessageFormat.format("SYS 下线 message clientId:{0}
+			// topic:{1} message:{2}",
+			// clientId, topic, message));
+			// });
 
 			// 订阅消息时可以用+、#通配符进行订阅主题匹配如：
 			// '+': 表示通配一个层级，例如a/+，匹配a/x, a/y
 			//
 			// '#': 表示通配多个层级，例如a/#，匹配a/x, a/b/c/d
 			// 订阅者订阅的主题为a/+或者a/#订阅者的acl请求只会发一次。
-//			 mqttClient.publish("clients/123", new MqttMessage("中国强大了222".getBytes()));
+//			 mqttClient.publish("shareTopic", new MqttMessage("中国强大了".getBytes()));
 
 		} catch (MqttException e) {
 			System.out.println(e.getMessage());

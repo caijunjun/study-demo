@@ -52,6 +52,7 @@
 	</build>
 
 	<modules>
+		<module>study-concurrent</module>
 		<module>study-netty</module>
 		<module>study-mqtt</module>
 		<module>study-common</module>

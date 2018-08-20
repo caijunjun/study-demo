@@ -1,6 +1,7 @@
 package com.study.common;
 
-import com.study.common.util.IdUtil;;
+import com.study.common.util.IdUtil;
+import com.study.common.util.PropertiesUtil;;
 
 public class Test {
 
@@ -13,9 +14,6 @@ public class Test {
 //			}).run();
 //		}
 
-		double d=1;
-		Double dd=1D;
-		Float f=2f;
-		float ff=2;
+		System.out.println(IdUtil.getLongId());
 	}
 }
