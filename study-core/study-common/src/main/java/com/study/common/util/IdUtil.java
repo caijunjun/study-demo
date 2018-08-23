@@ -9,6 +9,10 @@ public class IdUtil {
 	public static long getLongId() {
 		return getInstance().nextId();
 	}
+	
+	public static String getNumberUuid(String prefix) {
+		return prefix+getLongId();
+	}
 
 	public static String getUuid() {
 		return randomAlphanumeric(32);

@@ -20,12 +20,10 @@ public class Test {
 	static CyclicBarrier cyclicBarrier = new CyclicBarrier(maxCount);
 
 	public static void main(String[] args) throws InterruptedException {
-		System.out.println(TimeUnit.MILLISECONDS.toHours(Integer.MAX_VALUE));
-		System.out.println(596 / 24);
 		// // HelloWorld
 		for (int i = 0; i < maxCount; i++) {
 
-			new Thread(() -> {
+//			new Thread(() -> {
 				// try {
 				// cyclicBarrier.await();
 				connectMqtt("test" + UUID.randomUUID() + Thread.currentThread().getName());
@@ -33,7 +31,7 @@ public class Test {
 				// // TODO Auto-generated catch block
 				// e.printStackTrace();
 				// }
-			}).start();
+//			}).start();
 
 		}
 
@@ -72,6 +70,16 @@ public class Test {
 		// mqtt.setWill(topic, payload, qos, retained);
 		try {
 			MqttClient mqttClient = new MqttClient("tcp://47.254.75.197:1883", clientId, new MemoryPersistence());
+			
+			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+				try {
+					mqttClient.disconnect();
+					mqttClient.close();
+				} catch (MqttException e) {
+					System.out.println("关闭mqttClient失败");
+				}
+			}));
+			
 			mqttClient.setCallback(new MqttCallback() {
 
 				@Override
@@ -119,7 +127,9 @@ public class Test {
 			//
 			// '#': 表示通配多个层级，例如a/#，匹配a/x, a/b/c/d
 			// 订阅者订阅的主题为a/+或者a/#订阅者的acl请求只会发一次。
-//			 mqttClient.publish("clients/123", new MqttMessage("中国强大了222".getBytes()));
+			 mqttClient.publish("clients/c_2f071944b5a24c74ad40a6d4895996cc", new MqttMessage("中国强大了333".getBytes()));
+			 
+			 mqttClient.publish("shareTopic", new MqttMessage("中国强大了testThread-0".getBytes()));
 
 		} catch (MqttException e) {
 			System.out.println(e.getMessage());

@@ -36,10 +36,13 @@ public class GenCommentGenerator implements CommentGenerator {
 			value = StringUtil.replaceAllMatch(value, "\\[(.+?)\\]", "");
 
 			field.addJavaDocLine("//" + value);
-			field.addAnnotation("@ApiModelProperty(value = \"" + value + "\")");
+
 			// 特殊标识
 
-			if (!matcher.find()) {
+			if (matcher.find()) {
+				field.addAnnotation("@ApiModelProperty(value = \"" + value +"[valid:add]"+ "\")");
+			} else {
+				field.addAnnotation("@ApiModelProperty(value = \"" + value + "\")");
 				return;
 			}
 			String selfRegex = matcher.group(1);
@@ -63,7 +66,7 @@ public class GenCommentGenerator implements CommentGenerator {
 			// size校验
 			if (introspectedColumn.isStringColumn() && introspectedColumn.getLength() > 0) {
 				field.addAnnotation("@Size(max=" + introspectedColumn.getLength() + ",message=\"" + replaceValue
-						+ "长度不能超过{max}\","+groupValue+")");
+						+ "长度不能超过{max}\"," + groupValue + ")");
 			}
 
 		}
@@ -71,11 +74,11 @@ public class GenCommentGenerator implements CommentGenerator {
 
 	@Override
 	public void addModelClassComment(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
-		boolean isHasCheck=introspectedTable.getAllColumns().stream().anyMatch((introspectedColumn)->{
+		boolean isHasCheck = introspectedTable.getAllColumns().stream().anyMatch((introspectedColumn) -> {
 			return StringUtil.matcherCaseInsensitive("\\[(.+?)\\]", introspectedColumn.getRemarks()).find();
 		});
 		topLevelClass.addImportedType("io.swagger.annotations.ApiModelProperty");
-		if(isHasCheck) {
+		if (isHasCheck) {
 			topLevelClass.addImportedType("javax.validation.constraints.NotNull");
 			topLevelClass.addImportedType("javax.validation.constraints.Size");
 		}
