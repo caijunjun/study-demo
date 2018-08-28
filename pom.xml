@@ -48,6 +48,9 @@
 
 	<modules>
 		<module>study-web</module>
+		<module>study-web-2.0</module>
 		<module>study-core</module>
 	</modules>
 </project>
+
+

@@ -1,6 +1,7 @@
 package com.study.mqtt;
 
 import java.text.MessageFormat;
+import java.util.UUID;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
@@ -30,7 +31,7 @@ public class Test2 {
 			executor.execute(() -> {
 				try {
 					cyclicBarrier.await();
-					connectMqtt(IdUtil.getNumberUuid("C_"));
+					connectMqtt(UUID.randomUUID().toString());
 				} catch (InterruptedException | BrokenBarrierException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

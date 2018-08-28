@@ -6,6 +6,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -20,22 +21,25 @@ public class Test {
 	static CyclicBarrier cyclicBarrier = new CyclicBarrier(maxCount);
 
 	public static void main(String[] args) throws InterruptedException {
-		// // HelloWorld
-		for (int i = 0; i < maxCount; i++) {
-
-//			new Thread(() -> {
-				// try {
-				// cyclicBarrier.await();
-				connectMqtt("test" + UUID.randomUUID() + Thread.currentThread().getName());
-				// } catch (BrokenBarrierException | InterruptedException e) {
-				// // TODO Auto-generated catch block
-				// e.printStackTrace();
-				// }
-//			}).start();
-
-		}
-
-		countDownLatch.await();
+		System.out.println();
+		
+//		
+//		// // HelloWorld
+//		for (int i = 0; i < maxCount; i++) {
+//
+////			new Thread(() -> {
+//				// try {
+//				// cyclicBarrier.await();
+//				connectMqtt("test" + UUID.randomUUID() + Thread.currentThread().getName());
+//				// } catch (BrokenBarrierException | InterruptedException e) {
+//				// // TODO Auto-generated catch block
+//				// e.printStackTrace();
+//				// }
+////			}).start();
+//
+//		}
+//
+//		countDownLatch.await();
 	}
 
 	private static void connectMqtt(String clientId) {
