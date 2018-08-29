@@ -1,8 +1,7 @@
-<?xml version="1.0"?>
-<project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>web-template-2.0-demo</artifactId>
@@ -10,30 +9,30 @@
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
 	<url>http://maven.apache.org</url>
-	
+
 	<parent>
 		<groupId>com.study.demo</groupId>
 		<artifactId>study-web-2.0</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	
+
 	<dependencies>
-		
-		
+
+
 	</dependencies>
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
-		<!-- <resources>
-			先指定 src/main/resources下所有文件及文件夹为资源文件
+		<resources>
+			<!-- 先指定 src/main/resources下所有文件及文件夹为资源文件 -->
 			<resource>
 				<directory>src/main/resources</directory>
 				<excludes>
 					<exclude>config-env*.properties</exclude>
 				</excludes>
 			</resource>
-			设置对auto-config.properties，jdbc.properties进行过虑，即这些文件中的${key}会被替换掉为真正的值
+			<!-- 设置对auto-config.properties，jdbc.properties进行过虑，即这些文件中的${key}会被替换掉为真正的值 -->
 			<resource>
 				<directory>src/main/resources</directory>
 				<includes>
@@ -45,9 +44,9 @@
 				</excludes>
 				<filtering>true</filtering>
 			</resource>
-		</resources> -->
+		</resources>
 		<plugins>
-		
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -59,7 +58,7 @@
 	</build>
 
 
-	<!-- <profiles>
+	<profiles>
 		<profile>
 			<id>dev</id>
 			<activation>
@@ -70,7 +69,6 @@
 					<filter>src/main/resources/config-env-dev.properties</filter>
 				</filters>
 			</build>
-
 		</profile>
 		<profile>
 			<id>test</id>
@@ -88,6 +86,6 @@
 				</filters>
 			</build>
 		</profile>
-	</profiles> -->
+	</profiles>
 
 </project>
