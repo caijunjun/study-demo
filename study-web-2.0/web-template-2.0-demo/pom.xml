@@ -19,6 +19,12 @@
 
 	<dependencies>
 
+		<!-- https://mvnrepository.com/artifact/com.maihaoche/spring-boot-starter-rocketmq -->
+		<dependency>
+			<groupId>com.maihaoche</groupId>
+			<artifactId>spring-boot-starter-rocketmq</artifactId>
+			<version>0.1.0</version>
+		</dependency>
 
 	</dependencies>
 
