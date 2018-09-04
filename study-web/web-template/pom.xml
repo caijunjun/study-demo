@@ -18,7 +18,37 @@
 
 	
 	<dependencies>
-		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-actuator</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+
+		<!-- 公共jar -->
+		<dependency>
+			<groupId>com.study.demo</groupId>
+			<artifactId>study-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 		
 	</dependencies>
 
@@ -30,5 +60,6 @@
 		<module>web-template-api</module>
 		<module>web-template-common</module>
 		<module>web-template-service</module>
+		<module>web-template-consumer</module>
 	</modules>
 </project>

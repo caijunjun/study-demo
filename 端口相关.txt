@@ -1,0 +1,3 @@
+eureka 18000
+gateway 18001
+config 18002

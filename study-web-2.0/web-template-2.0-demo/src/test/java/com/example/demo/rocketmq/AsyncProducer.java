@@ -6,6 +6,12 @@ import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.common.RemotingHelper;
 
+/**
+ * 可靠的异步传输 应用：异步传输通常用于响应时间敏感的业务场景
+ * 
+ * @author caijunjun
+ * @date 2018年8月31日
+ */
 public class AsyncProducer {
 	public static void main(String[] args) throws Exception {
 		// Instantiate with a producer group name.
