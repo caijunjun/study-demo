@@ -109,6 +109,14 @@
 				<configuration>
 					<executable>true</executable>
 				</configuration>
+				<!-- 如果不直接继承spring的parent，需要加 -->
+				<executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
 			</plugin>
 		</plugins>
 	</build>
