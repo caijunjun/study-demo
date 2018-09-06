@@ -15,6 +15,7 @@
 		<artifactId>study-demo</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+	
 
 	<dependencyManagement>
 		<dependencies>
@@ -26,7 +27,7 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
@@ -35,7 +36,7 @@
 				<scope>import</scope>
 			</dependency>
 		</dependencies>
-		
+
 	</dependencyManagement>
 
 	<dependencies>
@@ -53,15 +54,20 @@
 	</dependencies>
 
 	<build>
-
+		
 	</build>
 
 	<modules>
 		<module>web-template</module>
 		<!-- 注册中心 -->
-		<module>web-eureka</module>
+		<module>web-eureka</module> 
 		<!-- 服务网关 -->
 		<module>web-gateway</module>
-		
+		<!-- 配置中心 -->
+		<module>web-config</module>
+
+		<!-- spring cloud 公共中心 -->
+		<module>web-cloud</module>
+
 	</modules>
 </project>
