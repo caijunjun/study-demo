@@ -47,10 +47,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-config</artifactId>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -65,9 +61,10 @@
 		<module>web-gateway</module>
 		<!-- 配置中心 -->
 		<module>web-config</module>
-
 		<!-- spring cloud 公共中心 -->
 		<module>web-cloud</module>
-
+		<!-- 监控中心 -->
+		<module>web-admin</module>
+		
 	</modules>
 </project>

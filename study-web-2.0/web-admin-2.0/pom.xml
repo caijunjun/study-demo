@@ -3,85 +3,44 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.study.demo</groupId>
-		<artifactId>web-template</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
 
-	<artifactId>web-template-api</artifactId>
+	<artifactId>web-admin-2.0</artifactId>
+
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
 	<url>http://maven.apache.org</url>
 
+	<parent>
+		<groupId>com.study.demo</groupId>
+		<artifactId>study-web-2.0</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+
 	<dependencies>
 
-		<!-- 发现注册服务 -->
+		<!-- https://mvnrepository.com/artifact/de.codecentric/spring-boot-admin-server -->
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-eureka</artifactId>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-server</artifactId>
+			<version>2.0.2</version>
 		</dependency>
 		
-		<!-- 服务监控 -->
 		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		
-		<!-- 配置中心 -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-config</artifactId>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-server-ui</artifactId>
+			<version>2.0.2</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.study.demo</groupId>
-			<artifactId>web-template-service</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-
-
-		<!-- MySQL 连接驱动依赖 -->
-		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.46</version><!--$NO-MVN-MAN-VER$ -->
-		</dependency>
-
-		<!-- 第三方starter -->
-		<dependency>
-			<groupId>org.mybatis.spring.boot</groupId>
-			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>1.3.1</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid-spring-boot-starter</artifactId>
-			<version>1.1.6</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>com.github.pagehelper</groupId>
-			<artifactId>pagehelper-spring-boot-starter</artifactId>
-			<version>1.2.2</version>
-		</dependency>
-
-
-
-		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>2.8.0</version>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>2.8.0</version>
-		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -117,12 +76,12 @@
 				</configuration>
 				<!-- 如果不直接继承spring的parent，需要加 -->
 				<executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -139,7 +98,6 @@
 					<filter>src/main/resources/config-env-dev.properties</filter>
 				</filters>
 			</build>
-
 		</profile>
 		<profile>
 			<id>test</id>
@@ -158,4 +116,5 @@
 			</build>
 		</profile>
 	</profiles>
+
 </project>

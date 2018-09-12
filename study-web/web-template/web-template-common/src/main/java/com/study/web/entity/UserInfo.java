@@ -1,24 +1,20 @@
 package com.study.web.entity;
 
-import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
 
 public class UserInfo implements Serializable {
+	
     //主键id
-    @ApiModelProperty(value = "主键id")
     private Long id;
 
     //名称
-    @ApiModelProperty(value = "名称")
     private String name;
 
     //创建时间
-    @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
     //修改时间
-    @ApiModelProperty(value = "修改时间")
     private Date modifyTime;
 
     private static final long serialVersionUID = 1L;
