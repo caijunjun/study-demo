@@ -54,5 +54,6 @@
 	<modules>
 		<module>web-template-2.0-demo</module>
 		<module>web-admin-2.0</module>
+		<module>web-gateway-2.0</module>
 	</modules>
 </project>
