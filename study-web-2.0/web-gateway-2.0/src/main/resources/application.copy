@@ -1,0 +1,58 @@
+spring.application.name=gateway-server
+server.port=17002
+
+spring.redis.database=9
+spring.redis.host=@spring.redis.host@
+spring.redis.port=@spring.redis.port@
+spring.redis.password=@spring.redis.password@
+
+
+
+#使用具体的ip地址
+eureka.instance.prefer-ip-address=true
+#注册中心地址（多个用英文逗号隔开）
+eureka.client.serviceUrl.defaultZone=@eureka.client.serviceUrl.defaultZone@
+
+#不使用
+#gateway配置 eureka 服务自动发现
+spring.cloud.gateway.discovery.locator.enabled=true
+#大小写兼容 
+spring.cloud.gateway.discovery.locator.lowerCaseServiceId=true
+
+
+#详情可调试 NettyRoutingFilter.filter
+#访问地址 /api-user/userCenter 或者 /userCenter
+spring.cloud.gateway.routes[0].id=userRoute
+spring.cloud.gateway.routes[0].uri=lb://api-user
+spring.cloud.gateway.routes[0].predicates[0]=Path=/userCenter/**
+
+#是否带前缀
+spring.cloud.gateway.routes[0].filters[0]=StripPrefix=1
+#拼接到Path前面
+spring.cloud.gateway.routes[0].filters[0]=PrefixPath=/
+
+#过滤器
+spring.cloud.gateway.routes[0].filters[1].name=RequestRateLimiter
+#超出后 返回 429 Too Many Requests
+#允许用户每秒处理多少个请求
+spring.cloud.gateway.routes[0].filters[1].args.redis-rate-limiter.replenishRate=1000
+#令牌桶的容量，允许在一秒钟内完成的最大请求数
+spring.cloud.gateway.routes[0].filters[1].args.redis-rate-limiter.burstCapacity=1200
+#使用SpEL按名称引用bean
+spring.cloud.gateway.routes[0].filters[1].args.key-resolver=#{@ipKeyResolver}
+
+
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds=3000
+#spring.cloud.gateway.routes[0].filters[2]=RewritePath=/userCenter/(?<path>.*), /$\\{path}
+spring.cloud.gateway.routes[0].filters[2].name=Hystrix
+spring.cloud.gateway.routes[0].filters[2].args.name=fallbackcmd
+spring.cloud.gateway.routes[0].filters[2].args.fallbackUri=forward:/fallback
+
+#spring.cloud.gateway.routes[0].filters[0]=RequestRateLimiter=2, 2, #{@userkeyresolver}
+
+
+#cors
+spring.cloud.gateway.globalcors.corsConfigurations.[/**].allowedOrigins=*
+spring.cloud.gateway.globalcors.corsConfigurations.[/**].allowedMethods=GET,POST,PUT,DELETE,OPTIONS
+
+
