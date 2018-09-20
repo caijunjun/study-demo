@@ -42,13 +42,13 @@ public class AuthorizeGatewayFilterFactory extends AbstractGatewayFilterFactory<
 
 			// 令牌为空
 			if (token == null || token.length() == 0) {
-				return noAuth(response);
+//				return noAuth(response);
 			}
 			// 校验令牌
 			boolean checkToken = checkToken(config.getTokenKeyPrefix() + token);
 			// 令牌校验不通过
 			if (!checkToken) {
-				return noAuth(response);
+//				return noAuth(response);
 			}
 
 			return chain.filter(exchange);

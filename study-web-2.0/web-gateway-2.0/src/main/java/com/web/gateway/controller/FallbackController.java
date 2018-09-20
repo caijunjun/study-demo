@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 @RestController
 public class FallbackController {
 
-	@ResponseStatus(value = HttpStatus.TOO_MANY_REQUESTS)
+	@ResponseStatus(value = HttpStatus.SERVICE_UNAVAILABLE)
 	@GetMapping(value = "/fallback")
 	public Mono<Void> fallback() {
 		return Mono.empty();
