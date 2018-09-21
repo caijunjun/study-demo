@@ -35,8 +35,7 @@ public class SocketClient {
 
 					// 获取对应的 key，并从已选择的集合中移除
 					SelectionKey key = (SelectionKey) it.next();
-					it.remove();
-
+					
 					if (key.isConnectable()) {
 						// 进行连接操作
 						connect(key);
@@ -47,6 +46,7 @@ public class SocketClient {
 						// 进行读操作
 						receive(key);
 					}
+					it.remove();
 				}
 			}
 
@@ -60,11 +60,7 @@ public class SocketClient {
 		SocketChannel channel = (SocketChannel) key.channel();
 		ByteBuffer buffer = ByteBuffer.allocate(1024);
 		channel.read(buffer);
-		buffer.flip();
-
-		while (buffer.hasRemaining()) {
-			System.out.println(buffer.get());
-		}
+		System.out.println(new String(buffer.array(),"UTF-8"));
 
 	}
 
@@ -78,12 +74,13 @@ public class SocketClient {
 
 	private static void connect(SelectionKey key) throws IOException {
 		SocketChannel channel = (SocketChannel) key.channel();
+		channel.configureBlocking(false);
 		channel.finishConnect();
 		// 打印连接信息
 		InetSocketAddress remote = (InetSocketAddress) channel.socket().getRemoteSocketAddress();
 		String host = remote.getHostName();
 		int port = remote.getPort();
-		String connectStr=String.format("访问地址: %s:%s 连接成功!", host, port);
+		String connectStr = String.format("访问地址: %s:%s 连接成功!", host, port);
 		System.out.println(connectStr);
 	}
 }
