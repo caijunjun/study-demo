@@ -56,5 +56,6 @@
 		<module>web-template-common</module>
 		<module>web-template-service</module>
 		<module>web-template-consumer</module>
+		<module>web-template-netty</module>
 	</modules>
 </project>
