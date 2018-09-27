@@ -1,4 +1,4 @@
-package com.study.web.handler;
+package com.study.web.handler.core;
 
 public class CoreHandlerChain {
 

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.study.web.entity.UserInfo;
-import com.study.web.handler.CoreHandlerChain;
+import com.study.web.handler.core.CoreHandlerChain;
 import com.study.web.handler.self.SelfContext;
 
 @Controller

@@ -2,8 +2,8 @@ package com.study.web.handler.user;
 
 import org.springframework.stereotype.Service;
 
-import com.study.web.handler.CoreContext;
-import com.study.web.handler.CoreResult;
+import com.study.web.handler.core.CoreContext;
+import com.study.web.handler.core.CoreResult;
 import com.study.web.handler.userself.UserSelfHandler;
 
 @Service

@@ -1,6 +1,6 @@
 package com.study.web.handler.self;
 
-import com.study.web.handler.CoreResult;
+import com.study.web.handler.core.CoreResult;
 
 public class SelfResult implements CoreResult {
 	

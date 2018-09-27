@@ -1,8 +1,8 @@
 package com.study.web.handler.user;
 
-import com.study.web.handler.CoreContext;
-import com.study.web.handler.CoreHandler;
-import com.study.web.handler.CoreResult;
+import com.study.web.handler.core.CoreContext;
+import com.study.web.handler.core.CoreHandler;
+import com.study.web.handler.core.CoreResult;
 
 public interface UserHandler extends CoreHandler{
 

@@ -3,7 +3,7 @@ package com.study.web.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.study.web.handler.CoreHandlerChain;
+import com.study.web.handler.core.CoreHandlerChain;
 import com.study.web.handler.self.SelfContext;
 import com.study.web.handler.self.SelfHandler;
 import com.study.web.handler.user.UserHandler;

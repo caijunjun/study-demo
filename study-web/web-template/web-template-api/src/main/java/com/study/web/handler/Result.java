@@ -1,7 +1,13 @@
 package com.study.web.handler;
 
-public interface CoreResult {
-
+/**
+ * Handler 执行处理结果
+ * @author caijunjun
+ * @date 2018年9月27日 
+ * @param <R>
+ */
+public interface Result<R> {
+	
 	/**
 	 * 是否结束后续处理
 	 * 
@@ -16,7 +22,7 @@ public interface CoreResult {
 	 * 
 	 * @return
 	 */
-	default CoreResult getPrevResult() {
+	default R getPrevResult() {
 		return null;
 	}
 }
