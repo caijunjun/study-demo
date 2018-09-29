@@ -39,6 +39,8 @@ public class Application extends SpringBootServletInitializer implements Command
 
 	@Override
 	public void run(String... args) throws Exception {
+		
+		
 		stateMachine.start();
 		stateMachine.sendEvent(Events.PAY);
 		stateMachine.sendEvent(Events.RECEIVE);

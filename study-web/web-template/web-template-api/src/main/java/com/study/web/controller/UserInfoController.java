@@ -18,6 +18,7 @@ public class UserInfoController implements UserInfoCloudService {
 	@Autowired
 	private UserInfoService userInfoService;
 
+	
 	@RequestMapping(value = "/userInfo/cloud/get", method = RequestMethod.GET)
 	@Override
 	public UserInfo getUserInfo(@RequestParam("uid") long uid) {

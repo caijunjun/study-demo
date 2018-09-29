@@ -1,20 +1,21 @@
 package com.study.web.handler;
 
 /**
- * Handler 执行处理结果
+ * Handler结果
+ * 
  * @author caijunjun
- * @date 2018年9月27日 
+ * @date 2018年9月29日
  * @param <R>
  */
 public interface Result<R> {
-	
+
 	/**
-	 * 是否结束后续处理
+	 * 是否结束后续handler
 	 * 
 	 * @return
 	 */
 	default boolean isFinish() {
-		return true;
+		return false;
 	}
 
 	/**

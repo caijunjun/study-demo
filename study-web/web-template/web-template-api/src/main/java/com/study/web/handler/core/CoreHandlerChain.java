@@ -1,22 +1,15 @@
 package com.study.web.handler.core;
 
-public class CoreHandlerChain {
+import java.util.List;
 
-	private CoreHandler[] coreHandler;
+import org.springframework.transaction.support.TransactionTemplate;
 
-	public CoreHandlerChain(CoreHandler[] coreHandlers) {
-		super();
-		this.coreHandler = coreHandlers;
+import com.study.web.handler.HandlerChain;
+
+public class CoreHandlerChain extends HandlerChain<CoreContext, CoreResult, CoreHandler> {
+
+	public CoreHandlerChain(List<CoreHandler> handler, TransactionTemplate transactionTemplate) {
+		super(handler, transactionTemplate);
 	}
 
-	public CoreResult handler(CoreContext coreContext) {
-		CoreResult coreResult = null;
-		for (int i = 0; i < coreHandler.length; i++) {
-			coreResult = coreHandler[i].handler(coreContext, coreResult);
-			if (coreResult!=null&&coreResult.isFinish()) {
-				break;
-			}
-		}
-		return coreResult;
-	}
 }
