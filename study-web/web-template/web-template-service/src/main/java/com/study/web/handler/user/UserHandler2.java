@@ -14,17 +14,17 @@ public class UserHandler2 implements UserHandler {
 	@Autowired
 	private UserInfoMapper userInfoMapper;
 	
-	@Override
-	public int getOrder() {
-		return 100;
-	}
 
-	@Transactional
 	@Override
 	public UserResult handler(UserContext context, UserResult result) {
 		context.getUserInfo().setModifyTime(new Date());
 		userInfoMapper.updateByPrimaryKeySelective(context.getUserInfo());
 		return null;
+	}
+
+	@Override
+	public int getHandlerOrder() {
+		return 100;
 	}
 
 

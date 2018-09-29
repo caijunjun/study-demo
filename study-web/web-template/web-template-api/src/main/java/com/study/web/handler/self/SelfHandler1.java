@@ -16,16 +16,16 @@ public class SelfHandler1 implements SelfHandler {
 
 
 	@Override
-	public int getOrder() {
-		return 0;
-	}
-
-	@Override
 	public CoreResult handler(CoreContext coreContext, CoreResult coreResult) {
 		System.out.println("start 1");
 		System.out.println("start TODO");
 		System.out.println("end 1");
 		return null;
+	}
+
+	@Override
+	public int getHandlerOrder() {
+		return 0;
 	}
 
 

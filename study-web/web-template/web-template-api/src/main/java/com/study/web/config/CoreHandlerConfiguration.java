@@ -34,10 +34,10 @@ public class CoreHandlerConfiguration {
 		return new CoreHandlerChain(list, transactionTemplate);
 	}
 
-	@Bean
-	public HandlerChain<UserContext, UserResult, UserHandler> userHandlerChain(List<UserHandler> list) {
-		return new HandlerChain<>(list, transactionTemplate);
-	}
+//	@Bean
+//	public HandlerChain<UserContext, UserResult, UserHandler> userHandlerChain(List<UserHandler> list) {
+//		return new HandlerChain<>(list, transactionTemplate);
+//	}
 
 	@Bean
 	public HandlerChain<CoreContext, CoreResult, CoreHandler> coreHandler(List<CoreHandler> list) {

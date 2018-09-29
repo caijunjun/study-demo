@@ -10,16 +10,17 @@ public class UserHandler1 implements UserHandler {
 
 	@Autowired
 	private UserInfoMapper userInfoMapper;
-	
-	@Override
-	public int getOrder() {
-		return 0;
-	}
 
 	@Override
 	public UserResult handler(UserContext context, UserResult result) {
 		userInfoMapper.insert(context.getUserInfo());
 		return null;
+	}
+
+	@Override
+	public int getHandlerOrder() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 

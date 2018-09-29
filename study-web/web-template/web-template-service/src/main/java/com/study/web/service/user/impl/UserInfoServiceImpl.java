@@ -16,13 +16,11 @@ import com.study.web.handler.user.UserResult;
 import com.study.web.service.user.UserInfoService;
 
 @Service
-public class UserInfoServiceImpl implements UserInfoService {
+public class UserInfoServiceImpl implements UserInfoService,UserHandler {
 
 	@Autowired
 	private UserInfoMapper userInfoMapper;
 
-	@Autowired
-	private HandlerChain<UserContext, UserResult, UserHandler> userHandlerChain;
 	
 	@Override
 	public UserInfo getUserInfo(long uid) {
@@ -32,13 +30,21 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Transactional
 	@Override
 	public UserInfo addUserInfo(UserInfo userInfo) {
-		userInfo.setId(IdUtil.getLongId());
-		userInfo.setCreateTime(new Date());
-//		userInfoMapper.insert(userInfo);
-		UserContext context=new UserContext();
-		context.setUserInfo(userInfo);
-		userHandlerChain.handler(context, true);
+		userInfoMapper.insert(userInfo);
 		return userInfo;
 	}
+
+	@Override
+	public UserResult handler(UserContext context, UserResult result) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getHandlerOrder() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 }

@@ -15,10 +15,6 @@ import com.study.web.handler.core.CoreResult;
 public class SelfHandler2 implements SelfHandler {
 
 
-	@Override
-	public int getOrder() {
-		return 200;
-	}
 
 	@Override
 	public CoreResult handler(CoreContext coreContext, CoreResult coreResult) {
@@ -26,6 +22,12 @@ public class SelfHandler2 implements SelfHandler {
 		System.out.println("TODO 2");
 		System.out.println("end 2");
 		return null;
+	}
+
+	@Override
+	public int getHandlerOrder() {
+		// TODO Auto-generated method stub
+		return 200;
 	}
 
 }

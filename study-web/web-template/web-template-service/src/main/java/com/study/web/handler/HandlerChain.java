@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.util.Assert;
 
 /**
  * 泛型Handler链
+ * 适用场景，后期需要对某个大方法进行重构的时候适用，前期、小方法重构没有任何意义
  * 
  * @author caijunjun
  * @date 2018年9月29日
@@ -20,9 +22,11 @@ public class HandlerChain<C extends Context, R extends Result<R>, H extends Hand
 
 	private List<H> handlerList;
 
-	public HandlerChain(List<H> handler, TransactionTemplate transactionTemplate) {
+	public HandlerChain(List<H> handlerList, TransactionTemplate transactionTemplate) {
 		super();
-		this.handlerList = handler;
+		Assert.notEmpty(handlerList, "handler 集合不能为空");
+		Assert.notNull(transactionTemplate, "事务模板 不能为空");
+		this.handlerList = handlerList;
 		this.transactionTemplate = transactionTemplate;
 	}
 

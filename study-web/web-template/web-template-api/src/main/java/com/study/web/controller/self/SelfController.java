@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.study.common.util.IdUtil;
 import com.study.web.entity.UserInfo;
-import com.study.web.handler.HandlerChain;
 import com.study.web.handler.user.UserContext;
-import com.study.web.handler.user.UserHandler;
-import com.study.web.handler.user.UserResult;
+import com.study.web.handler.user.UserHandlerChain;
 import com.study.web.service.user.UserInfoService;
 
 @RestController
@@ -24,7 +22,7 @@ public class SelfController {
 	 * 垂直扩展
 	 */
 	@Autowired
-	private HandlerChain<UserContext, UserResult, UserHandler> userHandlerChain;
+	private UserHandlerChain userHandlerChain;
 	
 	@Autowired
 	private UserInfoService userInfoService;
@@ -33,15 +31,15 @@ public class SelfController {
 	@RequestMapping(value = "/self/cloud/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public UserInfo createUserInfo(@RequestBody UserInfo userInfo) {
 		
-		userInfoService.addUserInfo(userInfo);
+//		userInfoService.addUserInfo(userInfo);
 		
-//		UserContext userContext=new UserContext();
-//		userInfo.setId(IdUtil.getLongId());
-//		userInfo.setName("测试名称");
-//		userInfo.setCreateTime(new Date());
-//		userContext.setUserInfo(userInfo);
-//		
-//		userHandlerChain.handler(userContext,false);
+		UserContext userContext=new UserContext();
+		userInfo.setId(IdUtil.getLongId());
+		userInfo.setName("测试名称");
+		userInfo.setCreateTime(new Date());
+		userContext.setUserInfo(userInfo);
+		
+		userHandlerChain.handler(userContext,false);
 		
 		return userInfo;
 	}

@@ -22,4 +22,15 @@ public interface Handler<T extends Context, R extends Result<R>> extends Ordered
 	 * @return
 	 */
 	R handler(T context, R result);
+	
+	@Override
+	default int getOrder() {
+		return getHandlerOrder();
+	}
+
+	/**
+	 * handler 执行顺序
+	 * @return
+	 */
+	int getHandlerOrder();
 }
