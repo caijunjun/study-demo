@@ -10,11 +10,12 @@ public class UserHandler1 implements UserHandler {
 
 	@Autowired
 	private UserInfoMapper userInfoMapper;
-
+	
 	@Override
 	public UserResult handler(UserContext context, UserResult result) {
+		UserHandlerProxy.currentChainInfoHolder().setResult(new UserResult());
 		userInfoMapper.insert(context.getUserInfo());
-		return null;
+		return new UserResult();
 	}
 
 	@Override

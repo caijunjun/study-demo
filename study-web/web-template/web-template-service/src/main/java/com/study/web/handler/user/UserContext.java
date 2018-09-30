@@ -14,6 +14,11 @@ public class UserContext implements Context{
 	public void setUserInfo(UserInfo userInfo) {
 		this.userInfo = userInfo;
 	}
+
+	@Override
+	public boolean isOpenTransaction() {
+		return true;
+	}
 	
 	
 }

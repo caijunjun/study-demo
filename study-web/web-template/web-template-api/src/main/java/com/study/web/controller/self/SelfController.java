@@ -13,6 +13,7 @@ import com.study.common.util.IdUtil;
 import com.study.web.entity.UserInfo;
 import com.study.web.handler.user.UserContext;
 import com.study.web.handler.user.UserHandlerChain;
+import com.study.web.handler.user.UserHandlerProxy;
 import com.study.web.service.user.UserInfoService;
 
 @RestController
@@ -27,9 +28,13 @@ public class SelfController {
 	@Autowired
 	private UserInfoService userInfoService;
 	
+	@Autowired
+	private UserHandlerProxy userHandlerProxy;
 	
 	@RequestMapping(value = "/self/cloud/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public UserInfo createUserInfo(@RequestBody UserInfo userInfo) {
+		
+		
 		
 //		userInfoService.addUserInfo(userInfo);
 		
@@ -38,8 +43,11 @@ public class SelfController {
 		userInfo.setName("测试名称");
 		userInfo.setCreateTime(new Date());
 		userContext.setUserInfo(userInfo);
+
 		
-		userHandlerChain.handler(userContext,false);
+		UserHandlerProxy.currentChainInfoHolder().setOpenTransaction(true);
+		userHandlerProxy.getInstance().handler(userContext, null);
+//		userHandlerChain.handler(userContext,false);
 		
 		return userInfo;
 	}

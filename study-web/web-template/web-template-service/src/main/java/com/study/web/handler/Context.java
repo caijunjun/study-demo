@@ -8,4 +8,12 @@ package com.study.web.handler;
  */
 public interface Context {
 
+	/**
+	 * 是否开启事务
+	 * 
+	 * @return
+	 */
+	default boolean isOpenTransaction() {
+		return false;
+	}
 }

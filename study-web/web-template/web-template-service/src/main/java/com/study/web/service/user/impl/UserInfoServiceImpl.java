@@ -37,7 +37,7 @@ public class UserInfoServiceImpl implements UserInfoService,UserHandler {
 	@Override
 	public UserResult handler(UserContext context, UserResult result) {
 		// TODO Auto-generated method stub
-		return null;
+		return new UserResult();
 	}
 
 	@Override

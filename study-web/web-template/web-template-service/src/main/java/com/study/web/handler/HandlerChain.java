@@ -7,8 +7,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.Assert;
 
 /**
- * 泛型Handler链
- * 适用场景，后期需要对某个大方法进行重构的时候适用，前期、小方法重构没有任何意义
+ * 泛型Handler链 适用场景，后期需要对某个大方法进行重构的时候适用，前期、小方法重构没有任何意义
  * 
  * @author caijunjun
  * @date 2018年9月29日
@@ -30,23 +29,28 @@ public class HandlerChain<C extends Context, R extends Result<R>, H extends Hand
 		this.transactionTemplate = transactionTemplate;
 	}
 
-	public R handler(C context, boolean isOpenTransaction) {
-		// 当前是否存在事务了
-		boolean isExistTransaction;
-		try {
-			TransactionAspectSupport.currentTransactionStatus();
-			isExistTransaction = true;
-		} catch (Exception e) {
-			isExistTransaction = false;
+	public R handler(C context) {
+
+		if (context.isOpenTransaction()) {
+			// 当前是否存在事务了
+			boolean isExistTransaction;
+			try {
+				TransactionAspectSupport.currentTransactionStatus();
+				isExistTransaction = true;
+			} catch (Exception e) {
+				isExistTransaction = false;
+			}
+			//如果当前不存在事务
+			if (!isExistTransaction) {
+				return transactionTemplate.execute(status -> handlerNoTransaction(context));
+			}
+
 		}
-		if (isOpenTransaction && !isExistTransaction) {
-			return transactionTemplate.execute(status -> handler(context));
-		}
-		return handler(context);
+		return handlerNoTransaction(context);
 
 	}
 
-	private R handler(C context) {
+	private R handlerNoTransaction(C context) {
 		R result = null;
 		for (int i = 0; i < handlerList.size(); i++) {
 			result = handlerList.get(i).handler(context, result);

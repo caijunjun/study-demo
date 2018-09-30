@@ -5,14 +5,15 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.study.web.handler.HandlerChain;
+import com.study.web.handler.HandlerChainProxy;
 
 @Component
-public class UserHandlerChain extends HandlerChain<UserContext, UserResult, UserHandler> {
+public class UserHandlerProxy extends HandlerChainProxy<UserHandler> {
 
-	public UserHandlerChain(List<UserHandler> handlerList, TransactionTemplate transactionTemplate) {
+	public UserHandlerProxy(List<UserHandler> handlerList, TransactionTemplate transactionTemplate) {
 		super(handlerList, transactionTemplate);
 	}
+
 
 
 }
