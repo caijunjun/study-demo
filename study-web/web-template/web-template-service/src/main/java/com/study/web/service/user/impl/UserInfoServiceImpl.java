@@ -46,5 +46,11 @@ public class UserInfoServiceImpl implements UserInfoService,UserHandler {
 		return 0;
 	}
 
+	@Override
+	public UserInfo getUserInfo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

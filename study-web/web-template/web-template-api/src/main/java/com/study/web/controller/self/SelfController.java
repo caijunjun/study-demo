@@ -46,7 +46,7 @@ public class SelfController {
 
 		
 		UserHandlerProxy.currentChainInfoHolder().setOpenTransaction(true);
-		userHandlerProxy.getInstance().handler(userContext, null);
+		userHandlerProxy.getInstance().getUserInfo();
 //		userHandlerChain.handler(userContext,false);
 		
 		return userInfo;

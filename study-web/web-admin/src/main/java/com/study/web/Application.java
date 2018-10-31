@@ -1,28 +1,18 @@
 package com.study.web;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.Configuration;
 
 import de.codecentric.boot.admin.config.EnableAdminServer;
 
+@Configuration
+@EnableAutoConfiguration
 @EnableDiscoveryClient
 @EnableAdminServer
-@SpringBootApplication
-public class Application extends SpringBootServletInitializer {
-
-	/**
-	 * 实现SpringBootServletInitializer可以让spring-boot项目在web容器中运行
-	 */
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-		return super.configure(builder.sources(this.getClass()));
-	}
-
+public class Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
-
 }

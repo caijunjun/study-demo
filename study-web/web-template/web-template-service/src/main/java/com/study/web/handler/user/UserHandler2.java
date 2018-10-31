@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.study.web.dao.UserInfoMapper;
+import com.study.web.entity.UserInfo;
 
 @Service
 public class UserHandler2 implements UserHandler {
@@ -25,6 +26,12 @@ public class UserHandler2 implements UserHandler {
 	@Override
 	public int getHandlerOrder() {
 		return 100;
+	}
+
+	@Override
+	public UserInfo getUserInfo() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

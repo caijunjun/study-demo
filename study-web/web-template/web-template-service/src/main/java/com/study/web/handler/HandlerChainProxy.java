@@ -49,7 +49,7 @@ public class HandlerChainProxy<H> implements InvocationHandler {
 
 		// 获取上下文信息
 		boolean isOpenTransaction = currentChainInfoHolder().isOpenTransaction;
-
+		// 是否开启事务
 		if (isOpenTransaction) {
 			// 当前是否存在事务了
 			boolean isExistTransaction;
@@ -75,8 +75,7 @@ public class HandlerChainProxy<H> implements InvocationHandler {
 		return invokeResult;
 	}
 
-	private Object invoke(Method method, Object[] args)
-			throws IllegalAccessException, InvocationTargetException {
+	private Object invoke(Method method, Object[] args) throws IllegalAccessException, InvocationTargetException {
 		Result<?> result;
 		Object invokeResult = null;
 		for (int i = 0; i < handlerList.size(); i++) {

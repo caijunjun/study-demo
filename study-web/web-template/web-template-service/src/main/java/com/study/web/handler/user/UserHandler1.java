@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.study.web.dao.UserInfoMapper;
+import com.study.web.entity.UserInfo;
 
 @Service
 public class UserHandler1 implements UserHandler {
@@ -22,6 +23,12 @@ public class UserHandler1 implements UserHandler {
 	public int getHandlerOrder() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public UserInfo getUserInfo() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
