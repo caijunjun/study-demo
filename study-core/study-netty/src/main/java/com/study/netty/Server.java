@@ -74,7 +74,7 @@ public class Server {
 	}
 
 	public static void main(String[] args) {
-		int port = 8888;
+		int port = 8084;
 		new Server(port).run();
 	}
 
